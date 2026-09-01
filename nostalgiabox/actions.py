@@ -26,6 +26,7 @@ class Action(Enum):
     ENTER = auto()          # confirm a direct channel entry ("OK" / select)
     INFO = auto()           # re-show the channel banner
     LAST_CHANNEL = auto()   # jump back to the previously watched channel
+    SEEK_FORWARD = auto()   # skip 5 seconds forward
     POWER = auto()          # toggle standby (blank screen)
     QUIT = auto()           # shut the application down entirely
 

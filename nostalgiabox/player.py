@@ -82,6 +82,10 @@ class Player(ABC):
     def set_mute(self, muted: bool) -> None: ...
 
     @abstractmethod
+    def seek_relative(self, seconds: float) -> None:
+        """Seek relative to the current playback position."""
+
+    @abstractmethod
     def get_time_pos(self) -> Optional[float]:
         """Current playback position in seconds, or None if nothing is playing."""
 
@@ -320,6 +324,12 @@ class MpvPlayer(Player):
             return float(pos) if pos is not None else None
         except Exception:  # noqa: BLE001
             return None
+        
+    def seek_relative(self, seconds: float) -> None:
+        try:
+            self._mpv.command("seek", float(seconds), "relative")
+        except Exception:  # noqa: BLE001
+            log.debug("seek failed", exc_info=True)
 
     # -- OSD ----------------------------------------------------------------
     def show_text(self, text: str, duration: float) -> None:
@@ -448,6 +458,11 @@ class MockPlayer(Player):
     def set_overlay(self, overlay_id: int, ass: str, res_x: int, res_y: int) -> None:
         self.overlays[overlay_id] = ass
         self._log(f"OVERLAY {overlay_id}")
+
+    def seek_relative(self, seconds: float) -> None:
+        if self.current is None:
+            return
+        self.time_pos = max(0.0, self.time_pos + float(seconds))
 
     def clear_overlay(self, overlay_id: int) -> None:
         self.overlays.pop(overlay_id, None)
