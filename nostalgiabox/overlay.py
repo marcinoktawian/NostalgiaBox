@@ -79,8 +79,8 @@ class OverlayManager:
         self._player.set_overlay(_ID_CHANNEL, ass, CANVAS_W, CANVAS_H)
         self._arm(_ID_CHANNEL, dur)
 
-    def show_volume(
-        self, level: int, muted: bool, *, duration: Optional[float] = None
+    def show_episode(
+        self, text: str, *, duration: Optional[float] = None
     ) -> None:
         """Show the current episode name in the bottom-left of the picture."""
         dur = self._config.osd_duration if duration is None else duration
