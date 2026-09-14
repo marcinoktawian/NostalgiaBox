@@ -83,7 +83,7 @@ class OverlayManager:
         self, text: str, *, duration: Optional[float] = None
     ) -> None:
         """Show the current episode name in the bottom-left of the picture."""
-        dur = self._config.osd_duration if duration is None else duration
+        dur = self._config.channel_bug_seconds if duration is None else duration
         ass = _episode_ass(text, self._ui)
         self._player.set_overlay(_ID_EPISODE, ass, CANVAS_W, CANVAS_H)
         self._arm(_ID_EPISODE, dur)
