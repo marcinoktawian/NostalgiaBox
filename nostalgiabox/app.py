@@ -211,6 +211,7 @@ class TVApp:
             Action.MUTE: self._toggle_mute,
             Action.INFO: self._show_info,
             Action.LAST_CHANNEL: self._jump_last_channel,
+            Action.SEEK_FORWARD: self._seek_forward,
             Action.ENTER: self._confirm_digits,
         }
         if action == Action.DIGIT:
@@ -364,6 +365,9 @@ class TVApp:
         self.muted = not self.muted
         self.player.set_mute(self.muted)
         self.overlay.show_volume(self.volume, self.muted)
+
+    def _seek_forward(self) -> None:
+        self.player.seek_relative(5.0)
 
     # -- info / standby -----------------------------------------------------
     def _show_info(self) -> None:

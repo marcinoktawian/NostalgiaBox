@@ -45,7 +45,8 @@ _EVDEV_ACTIONS: Dict[str, InputEvent] = {
     "KEY_KPENTER": InputEvent(Action.ENTER),
     "KEY_OK": InputEvent(Action.ENTER),
     "KEY_SELECT": InputEvent(Action.ENTER),
-    "KEY_SPACE": InputEvent(Action.ENTER),
+    # Jump 5 second forward
+    "KEY_SPACE": InputEvent(Action.SEEK_FORWARD),
     # Info banner.
     "KEY_INFO": InputEvent(Action.INFO),
     "KEY_I": InputEvent(Action.INFO),
