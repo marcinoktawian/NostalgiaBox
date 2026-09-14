@@ -47,6 +47,7 @@ _ID_CHANNEL = 1
 _ID_VOLUME = 2
 _ID_STANDBY = 3
 _ID_MESSAGE = 4
+_ID_EPISODE = 5
 
 _BLACK = "&H00000000"
 
@@ -81,6 +82,15 @@ class OverlayManager:
     def show_volume(
         self, level: int, muted: bool, *, duration: Optional[float] = None
     ) -> None:
+        """Show the current episode name in the bottom-left of the picture."""
+        dur = self._config.osd_duration if duration is None else duration
+        ass = _episode_ass(text, self._ui)
+        self._player.set_overlay(_ID_EPISODE, ass, CANVAS_W, CANVAS_H)
+        self._arm(_ID_EPISODE, dur)
+
+    def show_volume(
+        self, level: int, muted: bool, *, duration: Optional[float] = None
+    ) -> None:
         dur = self._config.osd_duration if duration is None else duration
         ass = _volume_ass(level, muted, self._ui)
         self._player.set_overlay(_ID_VOLUME, ass, CANVAS_W, CANVAS_H)
@@ -111,7 +121,7 @@ class OverlayManager:
                 self._expiry.pop(overlay_id, None)
 
     def clear_all(self) -> None:
-        for overlay_id in (_ID_CHANNEL, _ID_VOLUME, _ID_STANDBY, _ID_MESSAGE):
+        for overlay_id in (_ID_CHANNEL, _ID_VOLUME, _ID_STANDBY, _ID_MESSAGE, _ID_EPISODE):
             self._player.clear_overlay(overlay_id)
         self._expiry.clear()
 
@@ -160,6 +170,13 @@ def _channel_bug_ass(number: int, name: str, ui: UiConfig) -> str:
         rf"{{\an9\pos({_IX1},{_IY0 + 104}){_style(ui, size=40)}}}{_escape(name)}"
     )
     return "\n".join([number_line, name_line])
+
+def _episode_ass(text: str, ui: UiConfig) -> str:
+    """Current episode name in the bottom-left of the 4:3 picture."""
+    return (
+        rf"{{\an1\pos({_IX0},{_IY1}){_style(ui, size=40)}}}"
+        f"{_escape(text)}"
+    )
 
 
 def _volume_ass(level: int, muted: bool, ui: UiConfig) -> str:

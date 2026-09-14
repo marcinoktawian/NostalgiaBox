@@ -374,6 +374,10 @@ class TVApp:
         channel = self.lineup.current
         self.overlay.show_channel_bug(channel.number, channel.name)
 
+        if self._playing_path is not None:
+            episode_name = self._playing_path.stem
+            self.overlay.show_episode(episode_name)
+
     def _toggle_standby(self) -> None:
         self.standby = not self.standby
         if self.standby:
